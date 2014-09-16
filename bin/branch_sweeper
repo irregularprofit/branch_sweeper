@@ -9,10 +9,13 @@ class App
   include Methadone::CLILogging
 
   main do |repository|
-    BranchSweeper::Clean.new(repository).run!
+    BranchSweeper::Clean.new(repository, options['inactive-days'].to_i).run!
   end
 
   description 'Report branches that have not been active for the past year'
+
+  options['inactive-days'] = 365
+  on("-i DAYS", "--inactive-days", "How long the branch must be unchanged to be considered inactive")
 
   arg :repository, 'Repository to scan for inactive branches'
 
