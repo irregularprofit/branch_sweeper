@@ -6,7 +6,7 @@ require 'time'
 require 'colorize'
 
 module BranchSweeper
-  class Clean
+  class Inactive
 
     include Methadone::CLILogging
     include Methadone::SH
@@ -25,13 +25,12 @@ module BranchSweeper
 
       branches.each do |branch|
         unless exclude_branches.include?(branch.name)
-          commit = BranchSweeper.github.commit(repository, branch.commit.sha).commit
-          # authored_date = commit.author.date
-          commit_date = commit.committer.date
-          if commit_date < (Time.now - (60*60*24*inactive_days))
-            author_name = commit.author.name
-            commit_message = commit.message.split.join(' ')
-            puts "On #{commit_date.to_s.colorize(:blue)}, #{author_name.colorize(:red)} created #{branch.name.colorize(:red)} with commit message #{commit_message.colorize(:yellow)}\n"
+          branch_details = BranchSweeper.github.branch(repository, branch.name).commit.commit
+          date = branch_details.committer.date
+          if date < (Time.now - (60*60*24*inactive_days))
+            committer = branch_details.committer.name
+            commit_message = branch_details.message.split.join(' ')
+            puts "On #{date.to_s.colorize(:blue)}, #{committer.colorize(:red)} created #{branch.name.colorize(:red)} with commit message #{commit_message.colorize(:yellow)}\n"
 
             confirm_delete(branch.name)
           end
