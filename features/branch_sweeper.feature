@@ -7,7 +7,8 @@ Feature: My bootstrapped app kinda works
     When I get help for "branch_sweeper"
     Then the exit status should be 0
     And the banner should be present
+    And the banner should document that this app's arguments are:
+      |repository|
     And the banner should document that this app takes options
     And the following options should be documented:
       |--version|
-    And the banner should document that this app takes no arguments

@@ -8,8 +8,10 @@ Gem::Specification.new do |spec|
   spec.version       = BranchSweeper::VERSION
   spec.authors       = ["Jimmy Hsu"]
   spec.email         = ["irregular.profit@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Scan for inactive branches in a specified repository. And offer to clean them up.}
+  spec.description   = %q{Provides a command line tool
+                          to scan a repository for branches
+                          that have not been active for an year.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -22,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency('rdoc')
   spec.add_development_dependency('aruba')
-  spec.add_development_dependency('rake', '~> 0.9.2')
   spec.add_dependency('methadone', '~> 1.7.0')
   spec.add_dependency('netrc')
   spec.add_dependency('octokit', '~> 3.0')
