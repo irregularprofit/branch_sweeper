@@ -2,20 +2,20 @@
 
 require 'optparse'
 require 'methadone'
-require 'branch_sweeper.rb'
+require 'branch_sweeper'
 
 class App
   include Methadone::Main
   include Methadone::CLILogging
 
   main do |repository|
-    BranchSweeper::Inactive.new(repository, options['inactive-days'], options['exclude-branches']).run!
+    BranchSweeper::Merged.new(repository, options['target-branch'], options['exclude-branches']).run!
   end
 
   description 'Report branches that have not been active for the past year'
 
-  options['inactive-days'] = 365
-  on("-i DAYS", "--inactive-days", "How long the branch must be unchanged to be considered inactive")
+  options['target-branch'] = 'integration'
+  on("-t BRANCH", "--target-branch", "The branch to compare to for merge status")
 
   options['exclude-branches'] = "master,production,integration,staging"
   on("-e BRANCHES", "--exclude-branches", "Branches not to be included in the activeness check")
