@@ -25,10 +25,15 @@ module BranchSweeper
 
       branches.each do |branch|
         unless exclude_branches.include?(branch.name)
-          if BranchSweeper.github.compare(repository, target_branch, branch.name)[:ahead_by] > 0
-            puts branch.name.colorize(:red)
-          else
-            puts branch.name.colorize(:yellow)
+          # compare the feature/bug branch with target, because it's much faster
+          if BranchSweeper.github.compare(repository, target_branch, branch.name).status == 'behind'
+            # compare the target with feature/bug branch, to get more details about the feature/bug branch
+            commit_details = BranchSweeper.github.compare(repository, branch.name, target_branch).base_commit.commit
+            commit_message = commit_details.message.split.join(' ')
+            committer = commit_details.committer.name
+            date = commit_details.committer.date
+            puts "On #{date.to_s.colorize(:blue)}, #{committer.colorize(:red)} created #{branch.name.colorize(:red)} with commit message #{commit_message.colorize(:yellow)}\n"
+            confirm_delete(branch.name)
           end
         end
       end
