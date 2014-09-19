@@ -2,6 +2,7 @@ require "branch_sweeper/version"
 require 'octokit'
 require 'netrc'
 require 'highline/import'
+require 'socket'
 
 require 'branch_sweeper/inactive'
 require 'branch_sweeper/merged'
@@ -25,7 +26,7 @@ module BranchSweeper
       end while !valid
 
       client = Octokit::Client.new(login: login, password: password)
-      token = client.create_authorization(scopes: ["repo"], note: "Branch Sweeper").token
+      token = client.create_authorization(scopes: ["repo"], note: "Branch Sweeper #{Socket.gethostname}").token
 
       n = Netrc.read
       n["api.github.com"] = login, token
