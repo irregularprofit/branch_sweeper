@@ -18,6 +18,7 @@ module BranchSweeper
     begin
       client.user
     rescue Octokit::Unauthorized => exception
+      puts 'exception'
       begin
         login = ask("Enter your login: ")
         password = ask("Enter your password: ") { |q| q.echo = false }
